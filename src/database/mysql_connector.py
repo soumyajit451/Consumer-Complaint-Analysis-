@@ -5,7 +5,7 @@ def create_connection(host_name, user_name, user_password, db_name):
     connection = None
     try:
         connection = mysql.connector.connect(
-            host="silu",
+            host="127.0.0.1",
             user="root",
             passwd="Class@mate1234",
             database="consumer_complaint_analysis"
@@ -18,7 +18,7 @@ def create_connection(host_name, user_name, user_password, db_name):
 
 if __name__ == "__main__":
     # Replace these with your actual database credentials
-    host_name = "silu"
+    host_name = "127.0.0.1"
     user_name = "root"
     user_password = "Class@mate1234"
     db_name = "consumer_complaint_analysis"
