@@ -3,4 +3,8 @@
 
 # external requirements
 mysql-connector-python
+numpy
+pandas
+yaml
+sklearn
 
