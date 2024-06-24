@@ -22,18 +22,21 @@ def load_raw_data(input_path: Path) ->  pd.DataFrame:
     return raw_data
 
 
-def train_val_split(data: pd.DataFrame,
-                    test_size: float,
-                    random_state: int) -> tuple[pd.DataFrame, pd.DataFrame]:
-    
-    train_data, val_data = train_test_split(data,
-                                            test_size= test_size,
-                                            random_state= random_state)
-    dataset_logger.save_logs(msg=f'Data is split into train split with shape {train_data.shape} and val split with shape {val_data.shape}',
+def train_val_test_split(data: pd.DataFrame,
+                         val_size: float,
+                         test_size: float,
+                         random_state: int) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    train_data, temp_data = train_test_split(data, 
+                                             test_size=(val_size + test_size),
+                                             random_state=random_state)
+    val_data, test_data = train_test_split(temp_data, 
+                                           test_size=test_size/(val_size + test_size),
+                                           random_state=random_state)
+    dataset_logger.save_logs(msg=f'Data is split into train split with shape {train_data.shape}, val split with shape {val_data.shape}, and test split with shape {test_data.shape}',
                              log_level='info')
-    dataset_logger.save_logs(msg=f'The parameter values are {test_size} for test_size and {random_state} for random_state',
+    dataset_logger.save_logs(msg=f'The parameter values are val_size={val_size}, test_size={test_size}, and random_state={random_state}',
                              log_level='info')
-    return train_data, val_data
+    return train_data, val_data, test_data
 
 
 
@@ -48,51 +51,58 @@ def read_params(input_file):
     try:
         with open(input_file) as f:
             params_file = safe_load(f)
-            
+
     except FileNotFoundError as e:
-        dataset_logger.save_logs(msg='Parameters file not found, Switching to default values for train test split',
+        dataset_logger.save_logs(msg='Parameters file not found, switching to default values for train test split',
                                  log_level='error')
-        default_dict = {'test_size': 0.25,
-                        'random_state': None}
-        # read the default_dictionary
+        default_dict = {'val_size': 0.2, 'test_size': 0.2, 'random_state': 30}
+        val_size = default_dict['val_size']
         test_size = default_dict['test_size']
         random_state = default_dict['random_state']
-        return test_size, random_state
-        
+        return val_size, test_size, random_state
+    
     else:
-        dataset_logger.save_logs(msg=f'Parameters file read successfully',
-                                    log_level='info')
-        # read the parameters from the parameters file
+        dataset_logger.save_logs(msg='Parameters file read successfully',
+                                 log_level='info')
+        val_size = params_file['make_dataset']['val_size']
         test_size = params_file['make_dataset']['test_size']
         random_state = params_file['make_dataset']['random_state']
-        return test_size, random_state
+        return val_size, test_size, random_state
 
-def main():
-    # read the input file name from command
+def complaint():
+    # Read the input file name from command line
     input_file_name = sys.argv[1]
-    # current file path
+    # Current file path
     current_path = Path(__file__)
-    # root directory path
+    # Root directory path
     root_path = current_path.parent.parent.parent
-    # interim data directory path
+    # Interim data directory path
     interim_data_path = root_path / 'data' / 'interim'
-    # make directory for the interim path
-    interim_data_path.mkdir(exist_ok= True)
-    # raw train file path
-    raw_df_path = root_path / 'data' / 'raw' / 'extracted' / input_file_name
-    # load the training file
-    raw_df = load_raw_data(input_path= raw_df_path)
-    # parameters from params file
-    test_size, random_state = read_params('params.yaml')
-    # split the file to train and validation data
-    train_df, val_df = train_val_split(data= raw_df,
-                                       test_size= test_size,
-                                       random_state= random_state)
-    # save the train data to the output path
-    save_data(data= train_df, output_path= interim_data_path / 'train.csv')
-    # save the val data to the output path
-    save_data(data= val_df, output_path= interim_data_path / 'val.csv')
+    # Make directory for the interim path
+    interim_data_path.mkdir(exist_ok=True)
+    # Raw train file path
+    raw_df_path = root_path / 'data' / 'raw' / 'extracted_zip_data' / input_file_name
+    # Load the training file
+    raw_df = load_raw_data(input_path=raw_df_path)
+    # Parameters from params file
+    val_size, test_size, random_state = read_params('params.yaml')
+    # Split the file to train, validation, and test data
+    train_df, val_df, test_df = train_val_test_split(data=raw_df,
+                                                     val_size=val_size,
+                                                     test_size=test_size,
+                                                     random_state=random_state)
+    # Remove the target column from the test data
+    target_column = 'Consumer disputed?'
+    if target_column in test_df.columns:
+        test_df = test_df.drop(columns=[target_column])
+    
+    # Save the train data to the output path
+    save_data(data=train_df, output_path=interim_data_path / 'train.csv')
+    # Save the validation data to the output path
+    save_data(data=val_df, output_path=interim_data_path / 'val.csv')
+    # Save the test data to the output path
+    save_data(data=test_df, output_path=interim_data_path / 'test.csv')
     
     
 if __name__ == '__main__':
-    main()
+    complaint()

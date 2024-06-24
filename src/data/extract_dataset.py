@@ -22,7 +22,7 @@ def extract_zip_file(input_path: Path,output_path: Path):
         extract_logger.save_logs(msg=f'{input_file_name} extracted successfully at the target path',
                                  log_level='info')
         
-def customer():
+def complaint():
     # current file path 
     current_path = Path(__file__)
     # root directory path
@@ -36,17 +36,15 @@ def customer():
     # input path for zip files
     input_path = raw_data_path / 'zipped_file'
     
-    # extract the train and test files
-    # for the train file
-    extract_zip_file(input_path= input_path / 'train.zip',
+    # extract the customer zip files
+    
+    extract_zip_file(input_path= input_path / 'complaints.zip',
                      output_path= output_path )
-    # for the test file
-    extract_zip_file(input_path= input_path / 'test.zip',
-                     output_path= output_path)
+   
     
     
     
     
 if __name__ == "__main__":
     # call the main function
-    customer()
+    complaint()
