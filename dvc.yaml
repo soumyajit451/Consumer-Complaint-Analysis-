@@ -5,12 +5,12 @@ stages:
       - .\src\data\extract_dataset.py
       - .\data\raw\zipped_file
     outs:
-      - .\data\raw\extracted_zip_data
+      - .\data\extracted
   
   make_dataset:
     cmd: python .\src\data\make_dataset.py complaints.csv
     deps:
-      - .\data\raw\extracted_zip_data\complaints.csv
+      - .\data\extracted\complaints.csv
       - .\src\data\make_dataset.py
     params:
       - make_dataset.test_size
