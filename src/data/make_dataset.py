@@ -81,7 +81,7 @@ def complaint():
     # Make directory for the interim path
     interim_data_path.mkdir(exist_ok=True)
     # Raw train file path
-    raw_df_path = root_path / 'data' / 'raw' / 'extracted_zip_data' / input_file_name
+    raw_df_path = root_path / 'data' / 'extracted_data' /  input_file_name
     # Load the training file
     raw_df = load_raw_data(input_path=raw_df_path)
     # Parameters from params file

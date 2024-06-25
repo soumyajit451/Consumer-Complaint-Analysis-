@@ -10,7 +10,7 @@ stages:
   make_dataset:
     cmd: python .\src\data\make_dataset.py complaints.csv
     deps:
-      - .\data\raw\extracted_zip_data\complaints.csv
+      - .\data\extracted_data\complaints.csv
       - .\src\data\make_dataset.py
     params:
       - make_dataset.test_size

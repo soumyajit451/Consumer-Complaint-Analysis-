@@ -28,13 +28,13 @@ def complaint():
     # root directory path
     root_path = current_path.parent.parent.parent
     # raw data directory path
-    raw_data_path = root_path / 'data' / 'raw'
+    raw_data_path = root_path / 'data' 
     # output path for the zip files
-    output_path = raw_data_path / 'extracted_zip_data'
+    output_path = raw_data_path / 'extracted_data'
     # make the directory for the path
     output_path.mkdir(parents=True,exist_ok=True)
     # input path for zip files
-    input_path = raw_data_path / 'zipped_file'
+    input_path = raw_data_path / 'raw' / 'zipped_file'
     
     # extract the customer zip files
     
