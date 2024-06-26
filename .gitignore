@@ -8,7 +8,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-consumer/
+complaint/
 build/
 develop-eggs/
 dist/

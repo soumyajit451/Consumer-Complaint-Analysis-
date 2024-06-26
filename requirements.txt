@@ -5,6 +5,7 @@
 mysql-connector-python
 numpy
 pandas
-yaml
-sklearn
+pyyaml
+scikit-learn
+
 

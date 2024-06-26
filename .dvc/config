@@ -1,6 +1,0 @@
-[core]
-    remote = myremote
-[cache]
-    type = copy
-['remote "myremote"']
-    url = D:\dvc_files
