@@ -1,4 +1,6 @@
 [core]
     remote = myremote
+[cache]
+    type = copy
 ['remote "myremote"']
-    url = D:\dvc_files
+    url = gdrive://18n6B_xs41UwZso6pJwWX6xoxOhIRmq5S

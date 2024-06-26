@@ -1,22 +1,24 @@
 stages:
   extract_dataset:
-    cmd: python .\src\data\extract_dataset.py
+    cmd: python ./src/data/extract_dataset.py
     deps:
-      - .\src\data\extract_dataset.py
-      - .\data\raw\zipped_file
+      - ./src/data/extract_dataset.py
+      - ./data/raw/zipped_file/complaints.zip
     outs:
-      - .\data\extracted_data
-  
+      - ./data/extracted_data/complaints.csv
+
   make_dataset:
-    cmd: python .\src\data\make_dataset.py complaints.csv
+    cmd: python ./src/data/make_dataset.py complaints.csv
     deps:
-      - .\data\extracted_data\complaints.csv
-      - .\src\data\make_dataset.py
+      - ./data/extracted_data/complaints.csv
+      - ./src/data/make_dataset.py
     params:
-      - make_dataset.test_size
       - make_dataset.val_size
+      - make_dataset.test_size
       - make_dataset.random_state
     outs:
-      - .\data\interim
+      - ./data/interim/train.csv
+      - ./data/interim/val.csv
+      - ./data/interim/test.csv
 
   
