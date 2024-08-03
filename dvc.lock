@@ -25,26 +25,21 @@ stages:
       size: 369325665
     - path: ./src/data/make_dataset.py
       hash: md5
-      md5: a9259223229aff18d33212186c96a176
-      size: 5126
+      md5: a8f054bc95d096c2bb124f0264311b15
+      size: 3747
     params:
       params.yaml:
         make_dataset.random_state: 30
-        make_dataset.test_size: 0.2
-        make_dataset.val_size: 0.2
+        make_dataset.test_size: 0.3
     outs:
     - path: ./data/interim/test.csv
       hash: md5
-      md5: 9f05828b00cc607e5a86ae73d75f3b60
-      size: 4907915
+      md5: 4b28c206878abde4d6141baa43474a84
+      size: 14387217
     - path: ./data/interim/train.csv
       hash: md5
-      md5: 7c6a37529305301ac970afebe092e93b
-      size: 14444577
-    - path: ./data/interim/val.csv
-      hash: md5
-      md5: 47737d4fe2de4d20152c1316c6cda7d2
-      size: 4837515
+      md5: a2e3ada0c4b41086ecbfad73a8d4ae1a
+      size: 33543685
   data_preprocessing:
     cmd: python ./src/features/data_preprocessing.py complaints.csv
     deps:
@@ -61,3 +56,35 @@ stages:
       hash: md5
       md5: 89bf802778f1ea8483a8936b9191e2ed
       size: 369325665
+  Feature_enginerring:
+    cmd: python ./src/features/feature_engineering.py train.csv test.csv
+    deps:
+    - path: ./data/interim/test.csv
+      hash: md5
+      md5: 4b28c206878abde4d6141baa43474a84
+      size: 14387217
+    - path: ./data/interim/train.csv
+      hash: md5
+      md5: a2e3ada0c4b41086ecbfad73a8d4ae1a
+      size: 33543685
+    - path: ./src/features/feature_engineering.py
+      hash: md5
+      md5: d134170e02f4af3628b78938843ae36b
+      size: 3782
+    outs:
+    - path: ./data/feature/test_features.npz
+      hash: md5
+      md5: cea24f59cc1bffff66d609db55a0ba40
+      size: 5917956
+    - path: ./data/feature/test_target.pkl
+      hash: md5
+      md5: 8db3e41ca6d0fd92e58db003e8a928bd
+      size: 240241
+    - path: ./data/feature/train_features.npz
+      hash: md5
+      md5: 394aaefaf6bbf60b417242e36f30b85e
+      size: 13996472
+    - path: ./data/feature/train_target.pkl
+      hash: md5
+      md5: df7f024c2b823d210f0abd575496e80d
+      size: 560241
