@@ -1,7 +1,14 @@
 import logging
+import sys
 from zipfile import ZipFile
 from pathlib import Path
+import pandas as pd
 from src.logger import create_log_path, CustomLogger
+
+
+# Add the project root to the Python path
+project_root = str(Path(__file__).resolve().parent.parent.parent)
+sys.path.append(project_root)   
 
 # Path to save the log files
 log_file_path = create_log_path('extract_dataset')
@@ -40,3 +47,4 @@ def complaint():
 if __name__ == "__main__":
     # Call the main function
     complaint()
+    print("succesfully extract csv dataset")

@@ -98,3 +98,4 @@ def complaint():
 
 if __name__ == '__main__':
     complaint()
+    print("divide dataset train,test and valid")

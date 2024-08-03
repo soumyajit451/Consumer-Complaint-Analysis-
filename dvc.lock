@@ -9,8 +9,8 @@ stages:
       size: 758744162
     - path: ./src/data/extract_dataset.py
       hash: md5
-      md5: 600a64964429136621717e9e80e4a30d
-      size: 1528
+      md5: 6b42516a8ed6251ecf497059137eead4
+      size: 1755
     outs:
     - path: ./data/extracted_data/complaints.csv
       hash: md5
@@ -25,8 +25,8 @@ stages:
       size: 3608460402
     - path: ./src/data/make_dataset.py
       hash: md5
-      md5: 980c23c13ae9e425d6f68705d6fdbbfc
-      size: 4878
+      md5: 3ef0e555fc904e6d982bd47064e5ba93
+      size: 4928
     params:
       params.yaml:
         make_dataset.random_state: 30
@@ -45,3 +45,19 @@ stages:
       hash: md5
       md5: 5ed456141f42cbff4dc61462699c8ca5
       size: 719933072
+  data_preprocessing:
+    cmd: python ./src/features/data_preprocessing.py complaints.csv
+    deps:
+    - path: ./data/extracted_data/complaints.csv
+      hash: md5
+      md5: 9d459ef07a62ece82f5e9f723fa2439b
+      size: 3608460402
+    - path: ./src/features/data_preprocessing.py
+      hash: md5
+      md5: 07afb2e051e022dac16d5aedb9c861e9
+      size: 4048
+    outs:
+    - path: ./data/processed/preprocessed.csv
+      hash: md5
+      md5: 89bf802778f1ea8483a8936b9191e2ed
+      size: 369325665
