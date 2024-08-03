@@ -17,16 +17,16 @@ stages:
       md5: 9d459ef07a62ece82f5e9f723fa2439b
       size: 3608460402
   make_dataset:
-    cmd: python ./src/data/make_dataset.py complaints.csv
+    cmd: python ./src/data/make_dataset.py preprocessed.csv
     deps:
-    - path: ./data/extracted_data/complaints.csv
+    - path: ./data/processed/preprocessed.csv
       hash: md5
-      md5: 9d459ef07a62ece82f5e9f723fa2439b
-      size: 3608460402
+      md5: 89bf802778f1ea8483a8936b9191e2ed
+      size: 369325665
     - path: ./src/data/make_dataset.py
       hash: md5
-      md5: 3ef0e555fc904e6d982bd47064e5ba93
-      size: 4928
+      md5: a9259223229aff18d33212186c96a176
+      size: 5126
     params:
       params.yaml:
         make_dataset.random_state: 30
@@ -35,16 +35,16 @@ stages:
     outs:
     - path: ./data/interim/test.csv
       hash: md5
-      md5: 6ed10fa775252f214b94b607d94ec53a
-      size: 716644823
+      md5: 9f05828b00cc607e5a86ae73d75f3b60
+      size: 4907915
     - path: ./data/interim/train.csv
       hash: md5
-      md5: f798ea6013be601abc2e988135282f14
-      size: 2158358585
+      md5: 7c6a37529305301ac970afebe092e93b
+      size: 14444577
     - path: ./data/interim/val.csv
       hash: md5
-      md5: 5ed456141f42cbff4dc61462699c8ca5
-      size: 719933072
+      md5: 47737d4fe2de4d20152c1316c6cda7d2
+      size: 4837515
   data_preprocessing:
     cmd: python ./src/features/data_preprocessing.py complaints.csv
     deps:

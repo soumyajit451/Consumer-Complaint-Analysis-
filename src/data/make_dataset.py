@@ -14,12 +14,14 @@ dataset_logger = CustomLogger(logger_name='make_dataset',
 # Set the level of logging to INFO
 dataset_logger.set_log_level(level=logging.INFO)
 
-def load_raw_data(input_path: Path) -> pd.DataFrame:
-    raw_data = pd.read_csv(input_path)
-    rows, columns = raw_data.shape
+def load_preprocessed_data(input_path: Path) -> pd.DataFrame:
+    preprocessed_data = pd.read_csv(input_path)
+    # Randomly sample 50000 rows
+    sampled_preprocessed_data = preprocessed_data.sample(n=50000)
+    rows, columns = sampled_preprocessed_data.shape
     dataset_logger.save_logs(msg=f'{input_path.stem} data read having {rows} rows and {columns} columns',
                              log_level='info')
-    return raw_data
+    return sampled_preprocessed_data
 
 def train_val_test_split(data: pd.DataFrame,
                          val_size: float,
@@ -75,13 +77,13 @@ def complaint():
     # Make directory for the interim path
     interim_data_path.mkdir(exist_ok=True)
     # Raw train file path
-    raw_df_path = root_path / 'data' / 'extracted_data' / input_file_name
+    preprocessed_data_path = root_path / 'data' / 'processed' / input_file_name
     # Load the training file
-    raw_df = load_raw_data(input_path=raw_df_path)
+    preprocessed_df = load_preprocessed_data(input_path=preprocessed_data_path)
     # Parameters from params file
     val_size, test_size, random_state = read_params('params.yaml')
     # Split the file to train, validation, and test data
-    train_df, val_df, test_df = train_val_test_split(data=raw_df,
+    train_df, val_df, test_df = train_val_test_split(data=preprocessed_df ,
                                                      val_size=val_size,
                                                      test_size=test_size,
                                                      random_state=random_state)
