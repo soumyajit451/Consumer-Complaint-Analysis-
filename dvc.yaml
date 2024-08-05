@@ -14,6 +14,7 @@ stages:
       - ./data/extracted_data/complaints.csv
     outs:
       - ./data/processed/preprocessed.csv
+
   make_dataset:
     cmd: python ./src/data/make_dataset.py preprocessed.csv
     deps:
@@ -25,6 +26,7 @@ stages:
     outs:
       - ./data/interim/train.csv
       - ./data/interim/test.csv
+
   Feature_enginerring:
     cmd: python ./src/features/feature_engineering.py train.csv test.csv
     deps:
@@ -37,6 +39,15 @@ stages:
       - ./data/feature/test_features.npz
       - ./data/feature/test_target.pkl
 
+  train_model:
+    cmd: python ./src/models/train_model.py train_features.npz train_target.pkl
+    deps:
+      - ./src/models/train_model.py
+      - ./data/feature/train_features.npz
+      - ./data/feature/train_target.pkl
+    outs:
+      - ./models/model.pkl
+   
 
   
 

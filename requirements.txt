@@ -7,5 +7,7 @@ numpy
 pandas
 pyyaml
 scikit-learn
+tensorflow
+xgboost
 
 
