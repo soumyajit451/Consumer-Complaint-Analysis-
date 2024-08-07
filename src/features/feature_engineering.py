@@ -75,19 +75,16 @@ def complaint():
     # Save processed datasets
     feature_path.mkdir(parents=True, exist_ok=True)
     save_sparse_data(X_train, feature_path / 'train_features.npz')
-    save_dense_data(y_train, feature_path / 'train_target.pkl')
+    save_dense_data(y_train, feature_path / 'train_target.joblib')
     save_sparse_data(X_test, feature_path / 'test_features.npz')
-    save_dense_data(y_test, feature_path / 'test_target.pkl')
+    save_dense_data(y_test, feature_path / 'test_target.joblib')
 
     # Save the transformers
-    joblib.dump(preprocessor, feature_path / 'preprocessor.pkl')
-    joblib.dump(lb, feature_path / 'label_binarizer.pkl')
+    joblib.dump(preprocessor, feature_path / 'preprocessor.joblib')
+    joblib.dump(lb, feature_path / 'label_binarizer.joblib')
 
     feature_engineering_logger.save_logs('Feature engineering complete and datasets saved', 'info')
     print("Feature engineering complete and datasets saved.")
 
 if __name__ == '__main__':
     complaint()
-
-
-

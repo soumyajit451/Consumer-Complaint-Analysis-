@@ -7,10 +7,10 @@ from sklearn.svm import SVC
 from xgboost import XGBClassifier
 import tensorflow as tf
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
-import pickle
+import joblib
 import sys
 from pathlib import Path
-from scipy.sparse import csr_matrix
+from scipy.sparse import load_npz
 
 # Define evaluation function
 def evaluate_clf(y_true, y_pred):
@@ -38,11 +38,10 @@ def build_neural_network(input_shape):
 
 def load_data(train_features_path, train_target_path):
     # Load the .npz file as a sparse matrix
-    loader = np.load(train_features_path)
-    X_train = csr_matrix((loader['data'], loader['indices'], loader['indptr']), shape=loader['shape'])
+    X_train = load_npz(train_features_path)
 
     # Load the target values
-    y_train = pd.read_pickle(train_target_path)
+    y_train = joblib.load(train_target_path)
     
     return X_train, y_train
 
@@ -95,7 +94,7 @@ def evaluate_models(X_train, y_train, models, batch_size=512, epochs=5):
 
 def save_model(model, path):
     with open(path, 'wb') as f:
-        pickle.dump(model, f)
+        joblib.dump(model, f)
 
 def save_report(report, path):
     report.to_csv(path, index=False)
@@ -140,7 +139,7 @@ def main():
     best_model.fit(X_train, y_train)
 
     # Save the best model
-    model_save_path = root_path / 'models' / 'model.pkl'
+    model_save_path = root_path / 'models' / 'model.joblib'
     save_model(best_model, model_save_path)
 
     # Save the evaluation report

@@ -27,28 +27,23 @@ stages:
       - ./data/interim/train.csv
       - ./data/interim/test.csv
 
-  Feature_enginerring:
-    cmd: python ./src/features/feature_engineering.py train.csv test.csv
+  feature_engineering:
+    cmd: python ./src/features/feature_engineering.py
     deps:
       - ./src/features/feature_engineering.py
       - ./data/interim/train.csv
       - ./data/interim/test.csv
     outs:
       - ./data/feature/train_features.npz
-      - ./data/feature/train_target.pkl
+      - ./data/feature/train_target.joblib
       - ./data/feature/test_features.npz
-      - ./data/feature/test_target.pkl
+      - ./data/feature/test_target.joblib
 
   train_model:
-    cmd: python ./src/models/train_model.py train_features.npz train_target.pkl
+    cmd: python ./src/models/train_model.py data/feature/train_features.npz data/feature/train_target.joblib
     deps:
       - ./src/models/train_model.py
       - ./data/feature/train_features.npz
-      - ./data/feature/train_target.pkl
+      - ./data/feature/train_target.joblib
     outs:
-      - ./models/model.pkl
-   
-
-  
-
-  
+      - ./models/model.joblib
