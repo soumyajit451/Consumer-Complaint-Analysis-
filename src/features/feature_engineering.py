@@ -30,7 +30,7 @@ def save_dense_data(data, file_path: Path):
     joblib.dump(data, file_path)
     feature_engineering_logger.save_logs(msg=f'Dense data saved to {file_path}', log_level='info')
 
-def feature_engineering(preprocessed_data: pd.DataFrame):
+def feature_engineering(preprocessed_data: pd.DataFrame, preprocessor=None):
     X = preprocessed_data.drop('Consumer Disputed?', axis=1)
     y = preprocessed_data['Consumer Disputed?']
 
@@ -38,16 +38,20 @@ def feature_engineering(preprocessed_data: pd.DataFrame):
     ohe_columns = ['Product', 'Sub-Product', 'Issue', 'Sub-Issue', 'Company Public Response', 'State', 'Tags', 'Consumer Consent Provided?', 'Submitted Via', 'Timely Response?', 'Company Response To Consumer']
     string_columns = ['Consumer Complaint Narrative', 'Company']
 
-    # Define the transformers
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('ohe', OneHotEncoder(handle_unknown='ignore'), ohe_columns),
-            ('tfidf', TfidfVectorizer(), 'Consumer Complaint Narrative'),
-            ('company_tfidf', TfidfVectorizer(), 'Company')
-        ], n_jobs=-1)
+    if preprocessor is None:
+        # Define the transformers
+        preprocessor = ColumnTransformer(
+            transformers=[
+                ('ohe', OneHotEncoder(handle_unknown='ignore'), ohe_columns),
+                ('tfidf', TfidfVectorizer(), 'Consumer Complaint Narrative'),
+                ('company_tfidf', TfidfVectorizer(), 'Company')
+            ], n_jobs=-1)
+        # Fit and transform the data
+        X_transformed = preprocessor.fit_transform(X)
+    else:
+        # Transform the data using the pre-loaded preprocessor
+        X_transformed = preprocessor.transform(X)
 
-    # Fit and transform the data
-    X_transformed = preprocessor.fit_transform(X)
     feature_engineering_logger.save_logs('Data transformed using ColumnTransformer', 'info')
 
     # Encoding Target Columns
@@ -70,7 +74,7 @@ def complaint():
 
     # Apply feature engineering
     X_train, y_train, preprocessor, lb = feature_engineering(train_data)
-    X_test, y_test, _, _ = feature_engineering(test_data)
+    X_test, y_test, _, _ = feature_engineering(test_data, preprocessor)
 
     # Save processed datasets
     feature_path.mkdir(parents=True, exist_ok=True)

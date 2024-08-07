@@ -101,13 +101,13 @@ stages:
       size: 33638835
     - path: ./src/features/feature_engineering.py
       hash: md5
-      md5: c8e3b5995836b2a173664531577125fe
-      size: 3788
+      md5: a7202d5efb29fd3b5b9c7aa2ed3b92a2
+      size: 4013
     outs:
     - path: ./data/feature/test_features.npz
       hash: md5
-      md5: ae49f72984718b7efdd6abe3a00b323d
-      size: 6013700
+      md5: c98d345d92b342c77f550fc21a7e24a3
+      size: 6020028
     - path: ./data/feature/test_target.joblib
       hash: md5
       md5: bba582731afeaf7bd3a23166b6a49da2
@@ -140,3 +140,35 @@ stages:
       hash: md5
       md5: dbfd7398817fd8fee6ef4cc79cca4d03
       size: 2325225
+  prediction:
+    cmd: python ./src/models/predict_model.py data/feature/test_features.npz data/feature/test_target.joblib
+    deps:
+    - path: ./data/feature/preprocessor.joblib
+      hash: md5
+      md5: 11eab4119e55135e0478b4bcd6667534
+      size: 565820
+    - path: ./data/feature/test_features.npz
+      hash: md5
+      md5: c98d345d92b342c77f550fc21a7e24a3
+      size: 6020028
+    - path: ./data/feature/test_target.joblib
+      hash: md5
+      md5: bba582731afeaf7bd3a23166b6a49da2
+      size: 120241
+    - path: ./models/model.joblib
+      hash: md5
+      md5: dbfd7398817fd8fee6ef4cc79cca4d03
+      size: 2325225
+    - path: ./src/models/predict_model.py
+      hash: md5
+      md5: 639ab74fad5d5dbf903dde9ab5411948
+      size: 2896
+    outs:
+    - path: ./predictions/evaluation_report.csv
+      hash: md5
+      md5: b1edbbdbf7985e0874131f936a96f69d
+      size: 147
+    - path: ./predictions/predictions.csv
+      hash: md5
+      md5: e5afc3534eb680d21429ae15443dc164
+      size: 150015

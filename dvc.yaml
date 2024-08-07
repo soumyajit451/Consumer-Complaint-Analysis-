@@ -47,3 +47,14 @@ stages:
       - ./data/feature/train_target.joblib
     outs:
       - ./models/model.joblib
+  prediction:
+    cmd: python ./src/models/predict_model.py data/feature/test_features.npz data/feature/test_target.joblib
+    deps:
+      - ./src/models/predict_model.py
+      - ./data/feature/test_features.npz
+      - ./data/feature/test_target.joblib
+      - ./models/model.joblib
+      - ./data/feature/preprocessor.joblib
+    outs:
+      - ./predictions/predictions.csv
+      - ./predictions/evaluation_report.csv
