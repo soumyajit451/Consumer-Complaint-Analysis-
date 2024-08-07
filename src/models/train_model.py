@@ -105,8 +105,8 @@ def main():
     # Root directory path
     root_path = current_path.parent.parent.parent
     # Read the train feature and target paths from command line arguments
-    train_features_path = root_path / 'data' / 'feature' / sys.argv[1]
-    train_target_path = root_path / 'data' / 'feature' / sys.argv[2]
+    train_features_path = root_path / sys.argv[1]
+    train_target_path = root_path / sys.argv[2]
 
     # Load the data
     try:
@@ -118,11 +118,11 @@ def main():
     # Define models
     models = {
         "Logistic Regression": LogisticRegression(),
-        "Random Forest": RandomForestClassifier(),
+        #"Random Forest": RandomForestClassifier(),
         "Decision Tree": DecisionTreeClassifier(),
         "Gradient Boosting": GradientBoostingClassifier(),
         "XGBClassifier": XGBClassifier(),
-        "Support Vector Classifier": SVC(),
+        # "Support Vector Classifier": SVC(),
         "AdaBoost Classifier": AdaBoostClassifier()
     }
 

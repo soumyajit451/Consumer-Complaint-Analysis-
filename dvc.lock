@@ -120,3 +120,23 @@ stages:
       hash: md5
       md5: a31d9914fc441cfe9caa888ae6d6cb0d
       size: 280241
+  train_model:
+    cmd: python ./src/models/train_model.py data/feature/train_features.npz data/feature/train_target.joblib
+    deps:
+    - path: ./data/feature/train_features.npz
+      hash: md5
+      md5: 25ca51033b5a8649815468ab3d40e3fc
+      size: 14074207
+    - path: ./data/feature/train_target.joblib
+      hash: md5
+      md5: a31d9914fc441cfe9caa888ae6d6cb0d
+      size: 280241
+    - path: ./src/models/train_model.py
+      hash: md5
+      md5: c7e7ebed7b1852ea416f20570e906aa8
+      size: 5710
+    outs:
+    - path: ./models/model.joblib
+      hash: md5
+      md5: dbfd7398817fd8fee6ef4cc79cca4d03
+      size: 2325225
